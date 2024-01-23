@@ -1,9 +1,9 @@
 #include "String.hh"
 
 int main() {
-    String s1("Hello"); // 调用带参构造
-    String s2 = s1; // 调用拷贝构造
-    String s3;
+    CMyString s1("Hello"); // 调用带参构造
+    CMyString s2 = s1; // 调用拷贝构造
+    CMyString s3;
 
     s3 = s2; // 调用重载赋值运算符
     cout << "s1: " << s1.c_str() << endl;
