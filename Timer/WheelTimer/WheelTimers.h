@@ -1,7 +1,7 @@
 #ifndef TIME_WHEEL_TIMER
 #define TIME_WHEEL_TIMER
 #include <time.h>
-//#include <netinet/in.h>
+#include <netinet/in.h>
 #include <stdio.h>
 
 #define BUFFER_SIZE 64
@@ -9,7 +9,7 @@ class TwTimer;
 
 // 绑定 socket 和定时器
 struct ClientData {
-  //sockaddr_in address;
+  sockaddr_in address;
   int sockfd;
   char buf[BUFFER_SIZE];
   TwTimer* timer;
@@ -88,7 +88,7 @@ class TimeWheel{
       printf("add timer, totation is%d, ts is %d, cur_slot_ is%d\n", rotation,
              ts, cur_slot_);
       slots_[ts] = timer;
-    } else { // 否则，将定时器插入第 ts 个槽中
+    } else { // 否则，将定时器插入第 ts 个槽中 头插法
       timer->next_ = slots_[ts];
       slots_[ts]->prev_ = timer;
       slots_[ts] = timer;
