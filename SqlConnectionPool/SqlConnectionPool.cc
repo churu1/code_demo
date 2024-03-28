@@ -72,6 +72,7 @@ MYSQL* ConnectionPool::GetOneConnection() {
   return connection;
 }
 
+// 将这个无线程使用的连接添加会连接池中
 bool ConnectionPool::ReleaseOneConnection(MYSQL* connection) {
   if (NULL == connection)
     return false;
@@ -86,4 +87,27 @@ bool ConnectionPool::ReleaseOneConnection(MYSQL* connection) {
   sem_post(&sem_);
 }
 
+void ConnectionPool::DestroyPool() {
+  pthread_mutex_lock(&lock_);
+  if (connection_list_.size() > 0) {
+    for (auto it : connection_list_) {
+      mysql_close(it);
+    }
+    cur_connection_ = 0;
+    free_connection_ = 0;
+  }
+  pthread_mutex_unlock(&lock_);
+}
+
+int ConnectionPool::GetFreeConnection() {
+  return this->free_connection_;
+}
+
+ConnectionPool::~ConnectionPool() {
+  // 释放连接池中现有的连接
+  DestroyPool();
+  
+  // 释放锁资源
+  pthread_mutex_destroy(&lock_);
+}
 

@@ -47,9 +47,8 @@ class ConnectionPool {
    // 将构造函数、拷贝构造、重载=运算符函数都设为私有函数以实现单例模式
    ConnectionPool();
    ~ConnectionPool();
-   ConnectionPool(const ConnectionPool& other);
-   ConnectionPool& operator=(const ConnectionPool& other);
-
+   ConnectionPool(const ConnectionPool& other) = delete;
+   ConnectionPool &operator=(const ConnectionPool &other) = delete;
 
  private:
   // 数据库相关参数
